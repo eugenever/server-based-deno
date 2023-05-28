@@ -1,0 +1,64 @@
+[workspace]
+members = [
+    "./crates/base",
+    "./crates/cli",
+    "./crates/module_fetcher",
+    "./crates/sb_workers",
+    "./crates/sb_worker_context",
+    "./crates/sb_env",
+    "./crates/sb_core",
+    "./crates/flaky_test",
+]
+resolver = "2"
+
+[workspace.dependencies]
+log = "0.4.17"
+anyhow = { version = "1.0.57" }
+
+deno_ast = { version = "0.25.0", features = ["cjs", "transpiling"] }
+deno_core = { version = "0.179.0" }
+deno_console = { version = "0.97.0" }
+deno_crypto = { version = "0.111.0" }
+deno_fetch = { version = "0.121.0" }
+deno_fs = "0.7.0"
+deno_io = "0.7.0"
+deno_graph = "=0.45.0"
+deno_http = { version = "0.92.0" }
+deno_net = { version = "0.89.0" }
+deno_node = { version = "0.34.0" }
+deno_url = { version = "0.97.0" }
+deno_tls = { version = "0.84.0" }
+deno_webidl = { version = "0.97.0" }
+deno_web = { version = "0.128.0" }
+deno_websocket = { version = "0.102.0" }
+deno_webstorage = { version = "0.92.0" }
+serde = { version = "1.0.149", features = ["derive"] }
+hyper = "0.14.18"
+tokio = { version = "=1.25.0", features = ["full"] }
+bytes = { version = "1.4.0" }
+once_cell = "1.17.1"
+thiserror = "=1.0.38"
+deno_lockfile = "0.13.0"
+indexmap = { version = "1.9.2", features = ["serde"] }
+flate2 = "=1.0.24"
+tar = "=0.4.38"
+regex = "^1.7.0"
+fs3 = "0.5.0"
+tokio-util = "0.7.4"
+uuid = { version = "1.1.2", features = ["v4"] }
+reqwest = { version = "0.11.17" }
+futures = { version = "0.3.28" }
+tokio-uds-windows = { git = "https://github.com/Azure/tokio-uds-windows.git" }
+
+# unix
+nix = "=0.24.2"
+
+#windows deps
+winapi = "=0.3.9"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
