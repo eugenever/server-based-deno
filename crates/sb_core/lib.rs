@@ -13,7 +13,8 @@ deno_core::extension!(
         op_remove_file2,
         op_read_file_tokio,
         op_fetch_reqwest,
-        op_write_file_tokio
+        op_write_file_tokio,
+        op_fibonacci,
     ],
     esm = [
         "js/permissions.js",
@@ -56,4 +57,25 @@ pub async fn op_set_timeout2(delay: u64) -> Result<(), AnyError> {
 pub fn op_remove_file2(path: String) -> Result<(), AnyError> {
     std::fs::remove_file(path)?;
     Ok(())
+}
+
+fn fibonacci(n: u64) -> u64 {
+    match n {
+        0 | 1 => 1,
+        _ => fibonacci(n - 1) + fibonacci(n - 2),
+    }
+}
+
+#[op]
+pub async fn op_fibonacci(n: u64) -> Result<Vec<u64>, AnyError> {
+    let (tx, rx) = tokio::sync::oneshot::channel::<Vec<u64>>();
+    std::thread::spawn(move || {
+        let mut v: Vec<u64> = Vec::with_capacity((n + 1) as usize);
+        for i in 0..=n {
+            v.push(fibonacci(i));
+        }
+        _ = tx.send(v);
+    });
+    let res = rx.await.unwrap();
+    Ok(res)
 }

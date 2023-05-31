@@ -40,11 +40,11 @@ function delay(ms: number) {
 const controller = new AbortController();
 const { signal } = controller;
 
-const router = new Router();
+const router = new Router({ prefix: "/api/oak" });
 
 router
   // Note: path will be prefixed with function name
-  .get("/api/oak", (context) => {
+  .get("/", (context) => {
     context.response.body = `<!DOCTYPE html>
     <html>
       <head><title>Hello oak!</title><head>
@@ -55,7 +55,19 @@ router
     </html>
   `;
   })
-  .post("/api/oak/postgres", async (context) => {
+  .post("/fibonacci", async (context) => {
+    try {
+      const result = context.request.body({ type: "json", limit: 0 });
+      const body = await result.value;
+      const n = body.n || 10;
+
+      const fib = await Deno.fibonacci(n);
+      context.response.body = fib;
+    } catch (e) {
+      console.error(e);
+    }
+  })
+  .post("/postgres", async (context) => {
     try {
       const users = await runQuery("SELECT ID, NAME FROM USERS");
       context.response.body = users.rows;
@@ -71,7 +83,7 @@ router
       */
     }
   })
-  .post("/api/oak/greet", async (context) => {
+  .post("/greet", async (context) => {
     // highload
     await delay(5000);
     // Note: request body will be streamed to the function as chunks, set limit to 0 to fully read it.
@@ -81,10 +93,10 @@ router
 
     context.response.body = { msg: `Hey ${name}!` };
   })
-  .get("/api/oak/redirect", (context) => {
+  .get("/redirect", (context) => {
     context.response.redirect("https://www.example.com");
   })
-  .get("/api/oak/reboot", () => {
+  .get("/reboot", () => {
     // Work ===> event loop complited
     controller.abort();
   });
@@ -106,5 +118,3 @@ app.use(router.allowedMethods());
 const listenPromise = app.listen({ port: 8000, signal });
 
 await listenPromise;
-
-// and you can do something after the close to shutdown

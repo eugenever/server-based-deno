@@ -40,7 +40,7 @@ fn cli() -> Command {
         )
 }
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), anyhow::Error> {
     let matches = cli().get_matches();
 

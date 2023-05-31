@@ -2,7 +2,7 @@ import { ConfigWorker, createWorker } from "./configWorkers.ts";
 
 // workerPool<string, expireWorker[]>: servicePath:[..workers]
 const workerPool = new Map();
-let configuration;
+let configuration: any;
 
 async function addWorkerToPool(
   servicePath: string,

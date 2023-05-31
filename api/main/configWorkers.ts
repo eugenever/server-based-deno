@@ -1,5 +1,5 @@
 interface ConfigWorker {
-  servicePath: string;
+  servicePath?: string;
   lifeTimeMs: number;
   noModuleCache: boolean;
   importMapPath?: string;

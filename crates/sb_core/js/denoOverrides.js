@@ -1,5 +1,6 @@
 import * as net from "ext:deno_net/01_net.js";
 import * as tls from "ext:deno_net/02_tls.js";
+import * as timers from "ext:deno_web/02_timers.js";
 import * as permissions from "ext:sb_core_main_js/js/permissions.js";
 import {
     errors
@@ -15,6 +16,10 @@ async function readFileTokio(path) {
 
 function shutdownWorker(key) {
     Deno.core.ops.op_user_worker_shutdown(key);
+}
+
+async function fibonacci(n) {
+    return await Deno.core.opAsync("op_fibonacci", n);
 }
 
 const fsVars = {
@@ -90,12 +95,15 @@ const denoOverrides = {
     resolveDns: net.resolveDns,
     readFileTokio: readFileTokio,
     shutdownWorker: shutdownWorker,
+    fibonacci: fibonacci,
     core: core,
     serveHttp: serveHttp,
     permissions: permissions.permissions,
     Permissions: permissions.Permissions,
     PermissionStatus: permissions.PermissionStatus,
     errors: errors,
+    refTimer: timers.refTimer,
+    unrefTimer: timers.unrefTimer,
     ...fsVars
 }
 
