@@ -86,6 +86,8 @@
     "https://cdn.skypack.dev/-/tslib@v1.14.1-mWTe8wftGbG1xYC8gPyw/": "https://cdn.skypack.dev/-/tslib@v1.14.1-mWTe8wftGbG1xYC8gPyw/",
     "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/": "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/",
     "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/": "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/",
-    "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/": "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/"
-  }
+    "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/": "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/",
+    "https://deno.land/x/hono@v3.2.3/": "https://deno.land/x/hono@v3.2.3/",
+    "exists": "https://deno.land/std@0.189.0/fs/exists.ts"
+}
 }

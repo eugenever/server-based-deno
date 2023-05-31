@@ -1,6 +1,6 @@
 {    
     "defaultWorkerConfig": {        
-        "lifeTimeMs": 20000,
+        "lifeTimeMs": 5000,
         "noModuleCache": false,
         "importMapPath": "./api/import_map.json",
         "restart": false
@@ -15,14 +15,36 @@
             "number": 1
         },
         "xlsx-template": {
+            "active": false,
+            "lifeTimeMs": 3600000,
+            "noModuleCache": false,            
+            "restart": true,
+            "number": 1
+        },
+        "docx": {
+            "active": false,
+            "lifeTimeMs": 3600000,
+            "noModuleCache": false,            
+            "restart": true,
+            "number": 1
+        },
+        "empty-response": {
+            "active": true,
+            "lifeTimeMs": 3600000,
+            "noModuleCache": false,
+            "importMapPath": "./api/import_map.json",
+            "restart": true,
+            "number": 1
+        },
+        "main-empty": {
             "active": true,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
             "number": 1
         },
-        "main-empty": {
-            "active": true,
+        "pdf-lib": {
+            "active": false,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
@@ -34,12 +56,18 @@
             "noModuleCache": false,            
             "restart": true,
             "number": 1
-        },
-        "empty-response": {
+        },        
+        "hono": {
             "active": false,
             "lifeTimeMs": 3600000,
-            "noModuleCache": false,
-            "importMapPath": "./api/import_map.json",
+            "noModuleCache": false,            
+            "restart": true,
+            "number": 1
+        },
+        "evt": {
+            "active": false,
+            "lifeTimeMs": 3600000,
+            "noModuleCache": false,            
             "restart": true,
             "number": 1
         }
