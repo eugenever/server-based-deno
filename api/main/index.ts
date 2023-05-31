@@ -1,6 +1,7 @@
 import { serve } from "server";
 import { exists } from "exists";
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
+import { Mutex } from "async-mutex";
 
 import {
   addWorkerToPool,
@@ -13,6 +14,8 @@ import {
 // initialize Workers
 await initializeWorkers();
 // console.log("Init workerPool:", workerPool);
+// console.log(Mutex);
+const mutex = new Mutex();
 
 interface ServicePathStatistic {
   current_count_workers: number;
@@ -210,69 +213,92 @@ async function callWorker(
   configurationWorker: ConfigWorker
 ) {
   try {
-    const deleteKeys: {
-      key: string;
-      servicePath: string;
-      configuration: ConfigWorker;
-    }[] = [];
+    let expireWorker;
 
-    // check time expiration worker
-    const nowDate = new Date().getTime();
-    // check the expiration time of the workers and add them to the array for deletion
-    for (const [servicePath, workers] of workerPool) {
-      for (const expireWorker of workers) {
-        if (expireWorker.configuration.expireDate <= nowDate) {
-          deleteKeys.push({
-            key: expireWorker.worker.key,
-            servicePath,
-            configuration: expireWorker.configuration,
-          });
+    await mutex.runExclusive(async () => {
+      const deleteKeys: {
+        key: string;
+        servicePath: string;
+        configuration: ConfigWorker;
+      }[] = [];
+
+      // check time expiration worker
+      const nowDate = new Date().getTime();
+      // check the expiration time of the workers and add them to the array for deletion
+      for (const [servicePath, workers] of workerPool) {
+        for (const expireWorker of workers) {
+          if (expireWorker.configuration.expireDate <= nowDate) {
+            deleteKeys.push({
+              key: expireWorker.worker.key,
+              servicePath,
+              configuration: expireWorker.configuration,
+            });
+          }
         }
       }
-    }
 
-    // delete expired workers from pool and restart them if set this option
-    for (const { key, servicePath, configuration } of deleteKeys) {
-      const workersServicePath = workerPool.get(servicePath);
-      const workers = workersServicePath.filter(
-        (expireWorker: any) => expireWorker.worker.key !== key
-      );
-      console.log(
-        `EXPIRED Worker with key: ${key} for service path: ${servicePath} at ${configuration.expireDate?.toISOString()}`
-      );
-      if (configuration.restart) {
-        const expireWorker = await createWorker(configuration);
-        workers.push(expireWorker);
+      // delete expired workers from pool and restart them if set this option
+      for (const { key, servicePath, configuration } of deleteKeys) {
+        const workersServicePath = workerPool.get(servicePath);
+        const workers = workersServicePath.filter(
+          (expireWorker: any) => expireWorker.worker.key !== key
+        );
         console.log(
-          `RESTARTED Worker for service path: ${configuration.servicePath} with key (${expireWorker.worker.key})`
+          `EXPIRED Worker with key: ${key} for service path: ${servicePath} at ${configuration.expireDate?.toISOString()}`
+        );
+        if (configuration.restart) {
+          const expireWorker = await createWorker(configuration);
+          workers.push(expireWorker);
+          console.log(
+            `RESTARTED Worker for service path: ${configuration.servicePath} with key (${expireWorker.worker.key})`
+          );
+        }
+        workerPool.set(servicePath, workers);
+      }
+
+      // check if an existing worker is available in pool
+      const workersServicePath = workerPool.get(servicePath);
+      if (workersServicePath === undefined || workersServicePath.length == 0) {
+        const expireWorker = await createWorker(configurationWorker);
+        const workers = [];
+        workers.push(expireWorker);
+        workerPool.set(servicePath, workers);
+      }
+
+      if (
+        workerPool.get(servicePath) !== undefined &&
+        workerPool.get(servicePath).length > 1
+      ) {
+        // load balancing
+        expireWorker = workerPool.get(servicePath).shift();
+        workerPool.get(servicePath).push(expireWorker);
+      } else if (workerPool.get(servicePath).length == 1) {
+        expireWorker = workerPool.get(servicePath)[0];
+      } else {
+        return new Response(
+          JSON.stringify({
+            error: `Worker pool for service path (${servicePath}) is empty`,
+          }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          }
         );
       }
-      workerPool.set(servicePath, workers);
-    }
+    });
 
-    // check if an existing worker is available in pool
-    const workersServicePath = workerPool.get(servicePath);
-    if (workersServicePath === undefined || workersServicePath.length == 0) {
-      const expireWorker = await createWorker(configurationWorker);
-      const workers = [];
-      workers.push(expireWorker);
-      workerPool.set(servicePath, workers);
-    }
-
-    let expireWorker;
-    if (
-      workerPool.get(servicePath) !== undefined &&
-      workerPool.get(servicePath).length > 1
-    ) {
-      // load balancing
-      expireWorker = workerPool.get(servicePath).shift();
-      workerPool.get(servicePath).push(expireWorker);
-    } else if (workerPool.get(servicePath).length == 1) {
-      expireWorker = workerPool.get(servicePath)[0];
+    if (expireWorker) {
+      const res = await expireWorker.worker.fetch(req);
+      /*
+      console.log(
+        `Worker (${expireWorker.worker.key}) service request path: ${servicePath}`
+      );
+        */
+      return res;
     } else {
       return new Response(
         JSON.stringify({
-          error: `Worker pool for service path (${servicePath}) is empty`,
+          error: `expireWorker for service path (${servicePath}) is undefined`,
         }),
         {
           status: 500,
@@ -280,14 +306,6 @@ async function callWorker(
         }
       );
     }
-
-    const res = await expireWorker.worker.fetch(req);
-    /*
-      console.log(
-        `Worker (${expireWorker.worker.key}) service request path: ${servicePath}`
-      );
-        */
-    return res;
   } catch (e) {
     console.error(e);
     const error = { msg: e.toString() };
@@ -382,6 +400,12 @@ async function handler(req: Request): Promise<any> {
   serveStatistics(servicePath);
 
   return await callWorker(req, servicePath, configurationWorker);
+
+  /*
+  return await mutex.runExclusive(async () => {
+    return await callWorker(req, servicePath, configurationWorker);
+  });
+  */
 }
 
 console.log("Main worker started...");

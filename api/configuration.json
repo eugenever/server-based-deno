@@ -37,7 +37,7 @@
             "number": 1
         },
         "main-empty": {
-            "active": true,
+            "active": false,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,

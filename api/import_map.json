@@ -88,6 +88,8 @@
     "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/": "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/",
     "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/": "https://cdn.skypack.dev/-/@pdf-lib/fontkit@v1.1.1-DGmhZ2Iq2XqPukNanNyJ/",
     "https://deno.land/x/hono@v3.2.3/": "https://deno.land/x/hono@v3.2.3/",
-    "exists": "https://deno.land/std@0.189.0/fs/exists.ts"
+    "exists": "https://deno.land/std@0.189.0/fs/exists.ts",
+    "async-mutex": "https://esm.sh/async-mutex@0.4.0",
+    "https://esm.sh/v124/async-mutex@0.4.0/": "https://esm.sh/v124/async-mutex@0.4.0/"
 }
 }
