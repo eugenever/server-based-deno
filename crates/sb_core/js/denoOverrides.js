@@ -22,6 +22,10 @@ async function fibonacci(n) {
     return await Deno.core.opAsync("op_fibonacci", n);
 }
 
+async function fibonacci2(n) {
+    return await Deno.core.opAsync("op_fibonacci2", n);
+}
+
 const fsVars = {
     writeFileSync: fs.writeFileSync,
     writeFile: fs.writeFile,
@@ -96,6 +100,7 @@ const denoOverrides = {
     readFileTokio: readFileTokio,
     shutdownWorker: shutdownWorker,
     fibonacci: fibonacci,
+    fibonacci2: fibonacci2,
     core: core,
     serveHttp: serveHttp,
     permissions: permissions.permissions,

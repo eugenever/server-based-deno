@@ -35,71 +35,83 @@ pub async fn create_worker(
     let (unix_stream_tx, unix_stream_rx) = mpsc::unbounded_channel::<UnixStream>();
     // channel for terminate worker-thread
     let (terminate_tx, terminate_rx) = oneshot::channel::<()>();
-    
-    thread::Builder::new()
+
+    let is_user_runtime = match conf.conf.clone() {
+        EdgeContextOpts::UserWorker(_) => true,
+        EdgeContextOpts::MainWorker(_) => false,
+    };
+
+    if is_user_runtime {
+        // user worker run on dedicated thread
+        let res = thread::Builder::new()
         .name(service_path.into_os_string().into_string().unwrap())
-        .spawn(move || {
+        .spawn(move || {            
             
             let runtime = tokio::runtime::Builder::new_current_thread()
                 .enable_all()
                 .build()
-                .unwrap();           
-
+                .unwrap();
+            
             // spawn on LocalSet needed deno_core ===> spawn_local function
             let local = tokio::task::LocalSet::new();
 
             local.block_on(&runtime, async move {
-                let worker = EdgeRuntime::new(conf).unwrap();
-
-                let is_user_rt = worker.is_user_runtime;
+                let mut worker = EdgeRuntime::new(conf, unix_stream_rx).unwrap();
+                
                 let life_time_ms = worker.curr_user_opts.life_time_ms;
                 let key = worker.curr_user_opts.key;
-                let pool_msg_tx = worker.curr_user_opts.pool_msg_tx.clone();
-
-                if is_user_rt {
-                    // only for user worker
-                    // manages worker-thread shutdown (worker_ctx.rs ===> create_worker ===> terminate_rx)
-                    let handle = tokio::spawn(async move {
-                        tokio::time::sleep(std::time::Duration::from_millis(life_time_ms)).await;
-                        debug!("Max duration reached for the Worker ({:?}). Terminating the worker (duration {}) ...",
-                                key.unwrap_or(uuid::Uuid::default()),
-                                human_elapsed(life_time_ms),
-                            );
-                        // send a shutdown message back to user worker pool (so it stops sending requets to the
-                        // worker)
-                        if let Some(k) = key {
-                            if let Some(tx) = pool_msg_tx {
-                                if tx.send(UserWorkerMsgs::Shutdown(k)).is_err() {
-                                    error!("Failed to send the halt execution signal");
-                                }
-                            }
-                        };
-                    });
-
-                    // start the worker and wait completed event loop or termination thread
-                    tokio::select! {
-                        _ = worker.run(unix_stream_rx) => { 
-                            debug!("Event loop of worker for service path: {:?} is completed", service_path_clone)
-                        },
-                        _ = terminate_rx => {
-                            if !handle.is_finished() {
-                                handle.abort();
-                                tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
-                            }
-                            debug!("Worker for service path: {:?} is receive terminate signal", service_path_clone)
+                let pool_msg_tx = worker.curr_user_opts.pool_msg_tx.clone();               
+                    
+                // manages worker-thread shutdown (worker_ctx.rs ===> create_worker ===> terminate_rx)
+                let handle = tokio::spawn(async move {
+                    tokio::time::sleep(std::time::Duration::from_millis(life_time_ms)).await;
+                    debug!("Max duration reached for the Worker ({:?}). Terminating the worker (duration {}) ...",
+                         key.unwrap_or(uuid::Uuid::default()),
+                            human_elapsed(life_time_ms),
+                        );
+                     // send a shutdown message back to user worker pool (so it stops sending requets to the
+                    // worker)
+                    if let Some(k) = key {
+                        if let Some(tx) = pool_msg_tx {
+                            if tx.send(UserWorkerMsgs::Shutdown(k)).is_err() {
+                                error!("Failed to send the halt execution signal");
+                               }
                         }
                     };
-
-                } else {
-                    // main worker running always
-                    let res = worker.run(unix_stream_rx).await;
-                    if res.is_err() {
-                        println!("Main Worker panicked {:?}", res.err().unwrap());
+                });
+                
+                // start the worker and wait completed event loop or termination thread
+                tokio::select! {
+                    _ = worker.run() => { 
+                        debug!("Event loop of worker for service path: {:?} is completed", service_path_clone)
+                    },
+                    _ = terminate_rx => {
+                        if !handle.is_finished() {
+                            handle.abort();
+                            tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
+                        }
+                        debug!("Worker for service path: {:?} is receive terminate signal", service_path_clone)
                     }
-                }                               
+                };
             })
-        })
-        .unwrap();
+        });
+
+        if res.is_err() {
+            println!("User Worker panicked {:?}", res.err().unwrap());
+        }
+
+    } else {
+        // main worker run on main thread of server
+        tokio::task::spawn_local(async {
+            let mut worker = EdgeRuntime::new(conf, unix_stream_rx).unwrap();
+           
+            // main worker running always
+            let res = worker.run().await;
+            if res.is_err() {
+                println!("Main Worker panicked {:?}", res.err().unwrap());
+            }
+        });
+    }
 
     // create an async task waiting for a request
     let (worker_req_tx, mut worker_req_rx) = mpsc::unbounded_channel::<WorkerRequestMsg>();

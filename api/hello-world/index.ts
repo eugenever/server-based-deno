@@ -19,7 +19,7 @@ serve(
     };
 
     // emulates highload
-    await delay(1);
+    await delay(10000);
 
     return new Response(JSON.stringify(data), {
       headers: {

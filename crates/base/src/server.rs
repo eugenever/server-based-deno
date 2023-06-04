@@ -37,7 +37,7 @@ impl Service<Request<Body>> for WorkerService {
     fn call(&mut self, req: Request<Body>) -> Self::Future {
         // create a response in a future.
         let worker_req_tx = self.worker_req_tx.clone();
-        let fut = async move {
+        let response = async move {
             let req_path = req.uri().path();
 
             // if the request is for the health endpoint return a 200 OK response
@@ -60,7 +60,7 @@ impl Service<Request<Body>> for WorkerService {
         };
 
         // Return the response as an immediate future
-        Box::pin(fut)
+        Box::pin(response)
     }
 }
 

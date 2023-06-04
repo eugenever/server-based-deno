@@ -13,6 +13,17 @@ function genReport(data: Uint8Array, nameReport: string) {
   // Set up some placeholder values matching the placeholders in the template
   const values = {
     extractDate: new Date(),
+    /*
+    dates: [
+      new Date("2023-06-01"),
+      new Date("2023-06-02"),
+      new Date("2023-06-03"),
+    ],
+    people: [
+      { name: "John Smith", age: 20 },
+      { name: "Bob Johnson", age: 22 },
+    ],
+    */
     dates: [
       new Date("2023-06-01"),
       new Date("2023-06-02"),
@@ -454,6 +465,7 @@ function genReport(data: Uint8Array, nameReport: string) {
 
 serve(
   async (_req: Request) => {
+    const start = performance.now();
     // Load an XLSX file into memory
     const data = await Deno.readFile(
       join(Deno.cwd(), "api", "xlsx-template", "templates", "template1.xlsx")
@@ -461,6 +473,8 @@ serve(
 
     const nameReport = "report1.xlsx";
     genReport(data, nameReport);
+    const end = performance.now();
+    console.log(`Duration XLSX = ${end - start} ms`);
 
     return new Response(JSON.stringify({ hello: "XLSX Template" }), {
       headers: { "Content-Type": "application/json", Connection: "keep-alive" },

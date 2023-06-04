@@ -90,6 +90,15 @@
     "https://deno.land/x/hono@v3.2.3/": "https://deno.land/x/hono@v3.2.3/",
     "exists": "https://deno.land/std@0.189.0/fs/exists.ts",
     "async-mutex": "https://esm.sh/async-mutex@0.4.0",
-    "https://esm.sh/v124/async-mutex@0.4.0/": "https://esm.sh/v124/async-mutex@0.4.0/"
+    "https://esm.sh/v124/async-mutex@0.4.0/": "https://esm.sh/v124/async-mutex@0.4.0/",
+    "gdal": "https://cdn.skypack.dev/gdal", 
+    "node:fs": "https://deno.land/std@0.135.0/node/fs.ts",
+    "fs": "https://deno.land/std@0.135.0/node/fs.ts",
+    "path": "https://deno.land/std@0.188.0/path/mod.ts",
+    "pdfkit": "https://cdn.skypack.dev/pdfkit",
+    "string_decoder": "https://cdn.skypack.dev/string_decoder",
+    "https://cdn.skypack.dev/error/node:string_decoder": "https://cdn.skypack.dev/string_decoder",
+    "ts_prometheus": "https://deno.land/x/ts_prometheus@v0.3.0/mod.ts",
+    "https://deno.land/x/ts_prometheus@v0.3.0/": "https://deno.land/x/ts_prometheus@v0.3.0/"
 }
 }

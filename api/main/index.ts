@@ -14,7 +14,7 @@ import {
 // initialize Workers
 await initializeWorkers();
 // console.log("Init workerPool:", workerPool);
-// console.log(Mutex);
+
 const mutex = new Mutex();
 
 interface ServicePathStatistic {
@@ -400,12 +400,6 @@ async function handler(req: Request): Promise<any> {
   serveStatistics(servicePath);
 
   return await callWorker(req, servicePath, configurationWorker);
-
-  /*
-  return await mutex.runExclusive(async () => {
-    return await callWorker(req, servicePath, configurationWorker);
-  });
-  */
 }
 
 console.log("Main worker started...");
