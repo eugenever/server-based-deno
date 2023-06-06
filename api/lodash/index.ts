@@ -1,6 +1,6 @@
 // deno-lint-ignore-file require-await
-import { ld } from "lodash";
-import { serve } from "server";
+import { ld } from "https://x.nest.land/deno-lodash@1.0.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 serve(async (_req: Request) => {
   const words = [

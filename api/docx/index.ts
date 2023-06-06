@@ -11,7 +11,7 @@ serve(
     template();
     CV();
     const end = performance.now();
-    console.log(`Duration DOCX = ${end - start} ms`);
+    // console.log(`Duration DOCX = ${end - start} ms`);
 
     return new Response(JSON.stringify({ hello: "DOCX" }), {
       headers: { "Content-Type": "application/json", Connection: "keep-alive" },

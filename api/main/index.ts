@@ -1,7 +1,7 @@
-import { serve } from "server";
-import { exists } from "exists";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { exists } from "https://deno.land/std@0.189.0/fs/exists.ts";
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
-import { Mutex } from "async-mutex";
+import { Mutex } from "https://esm.sh/async-mutex@0.4.0";
 
 import {
   addWorkerToPool,

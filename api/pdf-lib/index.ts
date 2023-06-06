@@ -19,6 +19,8 @@ serve(
     const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer());
     */
 
+    const start = performance.now();
+
     const fontBytes = await Deno.readFile(
       join(Deno.cwd(), "api", "pdf-lib", "assets", "Ubuntu-R.ttf")
     );
@@ -97,7 +99,8 @@ serve(
       pdfBytes
     );
 
-    console.log("PDF file written to report.pdf");
+    const end = performance.now();
+    console.log(`Duration PDF-Lib = ${end - start} ms`);
 
     return new Response(JSON.stringify({ hello: "PDF-Lib" }), {
       headers: { "Content-Type": "application/json", Connection: "keep-alive" },

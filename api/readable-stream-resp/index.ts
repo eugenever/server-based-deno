@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { serve } from "server";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 console.log("Readable stream response started...");
 

@@ -1,10 +1,19 @@
-import { Application, Router, Context } from "oak";
-import { Pool } from "postgres";
-import { Counter, Registry } from "ts_prometheus";
+import {
+  Application,
+  Router,
+  Context,
+} from "https://deno.land/x/oak@v12.3.0/mod.ts";
+
+import { Pool } from "https://deno.land/x/postgres@v0.14.2/mod.ts";
+
+import {
+  Counter,
+  Registry,
+} from "https://deno.land/x/ts_prometheus@v0.3.0/mod.ts";
 
 console.log("OAK worker started...");
 
-const POOL_CONNECTIONS = 10;
+const POOL_CONNECTIONS = 20;
 const dbPool = new Pool(
   {
     user: "postgres",
@@ -66,7 +75,7 @@ router
     try {
       const result = context.request.body({ type: "json", limit: 0 });
       const body = await result.value;
-      const n = body.n || 10;
+      const n = body?.n || 10;
 
       const fib = await Deno.fibonacci(n);
       context.response.body = fib;
@@ -78,7 +87,7 @@ router
     try {
       const result = context.request.body({ type: "json", limit: 0 });
       const body = await result.value;
-      const n = body.n || 10;
+      const n = body?.n || 10;
 
       const fib = await Deno.fibonacci2(n);
       context.response.body = fib;
@@ -96,7 +105,7 @@ router
   })
   .post("/greet", async (context: Context) => {
     // highload
-    // await delay(10000);
+    await delay(10000);
     // Note: request body will be streamed to the function as chunks, set limit to 0 to fully read it.
     const result = context.request.body({ type: "json", limit: 0 });
     const body = await result.value;
@@ -118,7 +127,7 @@ router
 
 const app = new Application();
 
-app.use(async (context: Context, next: () => Promise<void>) => {
+app.use(async (context: Context, next: () => Promise<unknown>) => {
   // before requests
   const start = Date.now();
   await next();
@@ -127,7 +136,7 @@ app.use(async (context: Context, next: () => Promise<void>) => {
   context.response.headers.set("X-Response-Time", `${ms}ms`);
 });
 
-app.use(async (context: Context, next: () => Promise<void>) => {
+app.use(async (context: Context, next: () => Promise<unknown>) => {
   await next();
   counter
     .labels({

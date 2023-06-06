@@ -474,7 +474,7 @@ serve(
     const nameReport = "report1.xlsx";
     genReport(data, nameReport);
     const end = performance.now();
-    console.log(`Duration XLSX = ${end - start} ms`);
+    // console.log(`Duration XLSX = ${end - start} ms`);
 
     return new Response(JSON.stringify({ hello: "XLSX Template" }), {
       headers: { "Content-Type": "application/json", Connection: "keep-alive" },

@@ -1,16 +1,14 @@
 {    
     "defaultWorkerConfig": {        
         "lifeTimeMs": 5000,
-        "noModuleCache": false,
-        "importMapPath": "./api/import_map.json",
+        "noModuleCache": false,        
         "restart": false
     },
     "workers": {        
         "oak": {
             "active": true,
             "lifeTimeMs": 3600000,
-            "noModuleCache": false,
-            "importMapPath": "./api/import_map.json",
+            "noModuleCache": false,            
             "restart": true,
             "number": 1
         },
@@ -22,7 +20,7 @@
             "number": 1
         },
         "docx": {
-            "active": false,
+            "active": true,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
@@ -31,8 +29,7 @@
         "empty-response": {
             "active": false,
             "lifeTimeMs": 3600000,
-            "noModuleCache": false,
-            "importMapPath": "./api/import_map.json",
+            "noModuleCache": false,            
             "restart": true,
             "number": 1
         },
@@ -44,7 +41,7 @@
             "number": 1
         },
         "pdf-lib": {
-            "active": false,
+            "active": true,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
@@ -58,7 +55,7 @@
             "number": 1
         },        
         "hono": {
-            "active": false,
+            "active": true,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
