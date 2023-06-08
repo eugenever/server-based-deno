@@ -1,0 +1,18 @@
+#root {
+    background-color: #000;
+    position: absolute;
+    min-height: 400px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .mapContainer,
+  .mapContainer canvas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  

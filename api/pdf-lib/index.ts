@@ -100,7 +100,7 @@ serve(
     );
 
     const end = performance.now();
-    console.log(`Duration PDF-Lib = ${end - start} ms`);
+    // console.log(`Duration PDF-Lib = ${end - start} ms`);
 
     return new Response(JSON.stringify({ hello: "PDF-Lib" }), {
       headers: { "Content-Type": "application/json", Connection: "keep-alive" },

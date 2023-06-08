@@ -7,6 +7,7 @@ use std::future::Future;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::SocketAddr;
+use std::net::TcpListener as stdTCPListner;
 use std::path::Path;
 use std::pin::Pin;
 use std::str;
@@ -162,5 +163,16 @@ impl Server {
             }
         }
         Ok(())
+    }
+}
+
+pub fn get_available_port() -> Option<u16> {
+    (8500..9999).find(|port| port_is_available(*port))
+}
+
+pub fn port_is_available(port: u16) -> bool {
+    match stdTCPListner::bind(("127.0.0.1", port)) {
+        Ok(_) => true,
+        Err(_) => false,
     }
 }

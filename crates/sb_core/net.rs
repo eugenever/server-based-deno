@@ -1,131 +1,98 @@
-use anyhow::Error;
 use deno_core::error::bad_resource;
+use deno_core::error::custom_error;
 use deno_core::error::AnyError;
 use deno_core::op;
 use deno_core::AsyncRefCell;
-use deno_core::AsyncResult;
 use deno_core::CancelHandle;
 use deno_core::CancelTryFuture;
 use deno_core::OpState;
 use deno_core::RcRef;
 use deno_core::Resource;
 use deno_core::ResourceId;
-use deno_net::io::UnixStreamResource;
+use deno_net::io::TcpStreamResource;
 use deno_net::ops::IpAddr;
+use std::borrow::Cow;
 use std::cell::RefCell;
 use std::rc::Rc;
-use tokio::io::AsyncReadExt;
-use tokio::io::AsyncWriteExt;
-use tokio::sync::mpsc;
 
-pub struct TcpStreamResource {
-    rd: AsyncRefCell<tokio::net::tcp::OwnedReadHalf>,
-    wr: AsyncRefCell<tokio::net::tcp::OwnedWriteHalf>,
-    // When a `TcpStream` resource is closed, all pending 'read' ops are
-    // canceled, while 'write' ops are allowed to complete. Therefore only
-    // 'read' futures are attached to this cancel handle.
-    cancel: CancelHandle,
+pub struct TcpListenerResource {
+    pub listener: AsyncRefCell<tokio::net::TcpListener>,
+    pub cancel: CancelHandle,
 }
 
-impl TcpStreamResource {
-    pub fn into_inner(
-        self,
-    ) -> (
-        tokio::net::tcp::OwnedReadHalf,
-        tokio::net::tcp::OwnedWriteHalf,
-    ) {
-        (self.rd.into_inner(), self.wr.into_inner())
+impl Resource for TcpListenerResource {
+    fn name(&self) -> Cow<str> {
+        "tcpListener".into()
     }
-
-    async fn read(self: Rc<Self>, data: &mut [u8]) -> Result<usize, Error> {
-        let mut rd = RcRef::map(&self, |r| &r.rd).borrow_mut().await;
-        let cancel = RcRef::map(self, |r| &r.cancel);
-        let nread = rd.read(data).try_or_cancel(cancel).await?;
-        Ok(nread)
-    }
-
-    async fn write(self: Rc<Self>, data: &[u8]) -> Result<usize, Error> {
-        let mut wr = RcRef::map(self, |r| &r.wr).borrow_mut().await;
-        let nwritten = wr.write(data).await?;
-        Ok(nwritten)
-    }
-}
-
-impl Resource for TcpStreamResource {
-    deno_core::impl_readable_byob!();
-    deno_core::impl_writable!();
 
     fn close(self: Rc<Self>) {
-        self.cancel.cancel()
-    }
-}
-
-impl From<tokio::net::TcpStream> for TcpStreamResource {
-    fn from(s: tokio::net::TcpStream) -> Self {
-        let (rd, wr) = s.into_split();
-        Self {
-            rd: rd.into(),
-            wr: wr.into(),
-            cancel: Default::default(),
-        }
+        self.cancel.cancel();
     }
 }
 
 #[op]
-fn op_net_listen(_state: &mut OpState) -> Result<(ResourceId, IpAddr), AnyError> {
-    // this is a noop
-    // TODO: customize to match the service ip and port
-    Ok((
-        0,
-        IpAddr {
-            hostname: "0.0.0.0".to_string(),
-            port: 9999,
-        },
-    ))
+fn op_net_listen(state: Rc<RefCell<OpState>>) -> Result<(ResourceId, IpAddr), AnyError> {
+    let listener = {
+        let mut op_state = state.borrow_mut();
+        op_state.try_take::<tokio::net::TcpListener>()
+    };
+    if listener.is_none() {
+        return Err(bad_resource("TCPListener is not present in GothamState"));
+    }
+    let listener = listener.unwrap();
+    let local_addr = listener.local_addr().unwrap();
+    let resource = TcpListenerResource {
+        listener: AsyncRefCell::new(listener),
+        cancel: Default::default(),
+    };
+    let mut op_state = state.borrow_mut();
+    let rid = op_state.resource_table.add(resource);
+    // println!("op_net_listen, addr = {}", local_addr);
+    Ok((rid, IpAddr::from(local_addr)))
 }
 
 #[op]
 async fn op_net_accept(
     state: Rc<RefCell<OpState>>,
+    rid: ResourceId,
 ) -> Result<(ResourceId, IpAddr, IpAddr), AnyError> {
-    // we do not want to keep the op_state locked,
-    // so we take the channel receiver from it and release op state.
-    // we need to add it back later after processing a message.
-    let rx = {
-        let mut op_state = state.borrow_mut();
-        op_state.try_take::<mpsc::UnboundedReceiver<tokio::net::UnixStream>>()
-    };
+    let resource = state
+        .borrow()
+        .resource_table
+        .get::<TcpListenerResource>(rid)
+        .map_err(|_| bad_resource("Listener has been closed"))?;
 
-    if rx.is_none() {
-        return Err(bad_resource("rx channel is not present in GothamState"));
+    let listener = RcRef::map(&resource, |r| &r.listener)
+        .try_borrow_mut()
+        .ok_or_else(|| custom_error("Busy", "Another accept task is ongoing"))?;
+
+    let cancel = RcRef::map(resource, |r| &r.cancel);
+
+    let (tcp_stream, _socket_addr) = listener
+        .accept()
+        .try_or_cancel(cancel)
+        .await
+        .map_err(accept_err)?;
+
+    let local_addr = tcp_stream.local_addr()?;
+
+    let remote_addr = tcp_stream.peer_addr()?;
+
+    let mut state = state.borrow_mut();
+    let rid = state
+        .resource_table
+        .add(TcpStreamResource::new(tcp_stream.into_split()));
+    // println!("op_net_accept, addr = {}, {}", local_addr, remote_addr);
+    Ok((rid, IpAddr::from(local_addr), IpAddr::from(remote_addr)))
+}
+
+pub(crate) fn accept_err(e: std::io::Error) -> AnyError {
+    // FIXME(bartlomieju): compatibility with current JS implementation
+    if let std::io::ErrorKind::Interrupted = e.kind() {
+        bad_resource("Listener has been closed")
+    } else {
+        e.into()
     }
-    let mut rx = rx.unwrap();
-
-    let unix_stream = rx.recv().await;
-    if unix_stream.is_none() {
-        return Err(bad_resource("unix stream channel is closed"));
-    }
-    let unix_stream = unix_stream.unwrap();
-
-    let resource = UnixStreamResource::new(unix_stream.into_split());
-
-    // since the op state was dropped before,
-    // reborrow and add the channel receiver again
-    let mut op_state = state.borrow_mut();
-    op_state.put::<mpsc::UnboundedReceiver<tokio::net::UnixStream>>(rx);
-    let rid = op_state.resource_table.add(resource);
-
-    Ok((
-        rid,
-        IpAddr {
-            hostname: "0.0.0.0".to_string(),
-            port: 9999, // FIXME
-        },
-        IpAddr {
-            hostname: "0.0.0.0".to_string(),
-            port: 8888, // FIXME
-        },
-    ))
 }
 
 // TODO: This should be a global ext

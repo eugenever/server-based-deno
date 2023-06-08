@@ -8,10 +8,7 @@ use sb_worker_context::essentials::{
 };
 use std::collections::HashMap;
 use std::thread;
-#[cfg(unix)]
-use tokio::net::UnixStream;
-#[cfg(windows)]
-use tokio_uds_windows::UnixStream;
+use tokio::net::{TcpStream};
 use tokio::sync::{mpsc, oneshot};
 use tokio::task::JoinHandle;
 use uuid::Uuid;
@@ -23,7 +20,7 @@ pub struct WorkerRequestMsg {
 }
 
 pub async fn create_worker(
-    conf: EdgeContextInitOpts,
+    conf: EdgeContextInitOpts,    
 ) -> Result<(mpsc::UnboundedSender<WorkerRequestMsg>, oneshot::Sender<()>), Error> {
     let service_path = conf.service_path.clone();
     let service_path_clone = conf.service_path.clone();
@@ -31,10 +28,11 @@ pub async fn create_worker(
     if !service_path.exists() {
         bail!("Main function does not exist {:?}", &service_path)
     }
-
-    let (unix_stream_tx, unix_stream_rx) = mpsc::unbounded_channel::<UnixStream>();
+   
     // channel for terminate worker-thread
     let (terminate_tx, terminate_rx) = oneshot::channel::<()>();
+    // channel for send port
+    let (port_tx, port_rx) = oneshot::channel::<u16>();
 
     let is_user_runtime = match conf.conf.clone() {
         EdgeContextOpts::UserWorker(_) => true,
@@ -56,8 +54,9 @@ pub async fn create_worker(
             let local = tokio::task::LocalSet::new();
 
             local.block_on(&runtime, async move {
-                let mut worker = EdgeRuntime::new(conf, unix_stream_rx).unwrap();
+                let mut worker = EdgeRuntime::new(conf).await.unwrap();
                 
+                _ = port_tx.send(worker.port);
                 let life_time_ms = worker.curr_user_opts.life_time_ms;
                 let key = worker.curr_user_opts.key;
                 let pool_msg_tx = worker.curr_user_opts.pool_msg_tx.clone();               
@@ -101,9 +100,10 @@ pub async fn create_worker(
         }
     } else {
         // main worker run on main thread of server
-        tokio::task::spawn_local(async {
-            let mut worker = EdgeRuntime::new(conf, unix_stream_rx).unwrap();
+        tokio::task::spawn_local(async move{
+            let mut worker = EdgeRuntime::new(conf).await.unwrap();
            
+            _ = port_tx.send(worker.port);
             // main worker running always
             let res = worker.run().await;
             if res.is_err() {
@@ -115,20 +115,42 @@ pub async fn create_worker(
     let (worker_req_tx, mut worker_req_rx) = mpsc::unbounded_channel::<WorkerRequestMsg>();
 
     tokio::task::spawn_local(async move {
+        let port = port_rx.await.unwrap();        
         while let Some(msg) = worker_req_rx.recv().await {            
-            let service_path_clone2 = service_path_clone2.clone();
-            let unix_stream_tx_clone = unix_stream_tx.clone();            
+            let service_path_clone2 = service_path_clone2.clone();            
             // exclude blocking main worker and user worker during long-term processing of requests
             // user worker allways can receive new requests
             tokio::task::spawn_local(async move {
-                // create a unix socket pair
-                let (sender_stream, recv_stream) = UnixStream::pair().unwrap();
+                let stream: TcpStream;
 
-                let _ = unix_stream_tx_clone.clone().send(recv_stream);
-
+                let result = TcpStream::connect(format!("127.0.0.1:{}", port)).await;                
+                if result.is_ok() {
+                    stream = result.unwrap();
+                } else {
+                    loop {
+                        tokio::select! {
+                            res = TcpStream::connect(format!("127.0.0.1:{}", port)) => {
+                                match res {
+                                    Ok(s) => {
+                                        stream = s;
+                                        break;
+                                    },
+                                    Err(_) => {
+                                        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+                                    },
+                                }
+                            }
+                            _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
+                                stream = TcpStream::connect(format!("127.0.0.1:{}", port)).await.expect("Error tcp stream connect"); 
+                                break;
+                            }
+                        }
+                    }
+                }               
+                
                 // send the HTTP request to the worker over Unix stream
                 let (mut request_sender, connection) =
-                    hyper::client::conn::handshake(sender_stream).await.unwrap();
+                    hyper::client::conn::handshake(stream).await.unwrap();
 
                 // spawn a task to poll the connection and drive the HTTP state
                 let handle = tokio::task::spawn_local(async move {
@@ -138,8 +160,16 @@ pub async fn create_worker(
                 });                
                 
                 tokio::time::sleep(std::time::Duration::from_millis(1)).await;
-
-                let result = request_sender.send_request(msg.req).await;
+                
+                
+                let (mut parts, body) = msg.req.into_parts();                
+                if let Some(_) = parts.uri.port_u16() {                   
+                    let uri = format!("http://localhost:{}{}", port, parts.uri.path());
+                    parts.uri = uri.parse().unwrap();
+                }
+                let request = http::Request::from_parts(parts, body);
+                
+                let result = request_sender.send_request(request).await;
                 handle.abort();
                 _ = msg.res_tx.send(result);
             });
@@ -173,7 +203,7 @@ pub async fn create_user_worker_pool() -> Result<mpsc::UnboundedSender<UserWorke
                     };
                     user_worker_rt_opts.key = Some(key);
                     user_worker_rt_opts.pool_msg_tx = Some(user_worker_msgs_tx_clone.clone());
-                    worker_options.conf = EdgeContextOpts::UserWorker(user_worker_rt_opts);
+                    worker_options.conf = EdgeContextOpts::UserWorker(user_worker_rt_opts);                    
                     let result = create_worker(worker_options).await;
 
                     match result {

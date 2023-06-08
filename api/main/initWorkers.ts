@@ -25,7 +25,7 @@ async function getConfiguration(filePath: string) {
 }
 
 async function initializeWorkers() {
-  configuration = await getConfiguration("./api/configuration.json");
+  configuration = await getConfiguration("C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/configuration.json");
   for (const worker of Object.keys(configuration.workers)) {
     if (configuration.workers[worker].active) {
       const servicePath = apiPath(worker);
@@ -48,7 +48,7 @@ async function initializeWorkers() {
 }
 
 function apiPath(sp: string): string {
-  return `./api/${sp}`;
+  return `C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/${sp}`;
 }
 
 export {

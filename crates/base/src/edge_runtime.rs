@@ -1,4 +1,5 @@
 use crate::js_worker::module_loader;
+use crate::server::get_available_port;
 use anyhow::Error;
 use deno_core::error::AnyError;
 use deno_core::url::Url;
@@ -13,11 +14,8 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::rc::Rc;
 use std::{fmt, fs};
-#[cfg(unix)]
-use tokio::net::UnixStream;
+use tokio::net::TcpListener;
 use tokio::sync::mpsc;
-#[cfg(windows)]
-use tokio_uds_windows::UnixStream;
 
 use crate::{errors_rt, snapshot};
 use module_loader::DefaultModuleLoader;
@@ -67,6 +65,7 @@ pub struct EdgeRuntime {
     pub env_vars: HashMap<String, String>,
     pub conf: EdgeContextOpts,
     pub curr_user_opts: EdgeUserRuntimeOpts,
+    pub port: u16,
 }
 
 pub struct EdgeRuntimeError(Error);
@@ -98,10 +97,7 @@ fn get_error_class_name(e: &AnyError) -> &'static str {
 }
 
 impl EdgeRuntime {
-    pub fn new(
-        opts: EdgeContextInitOpts,
-        unix_stream_rx: mpsc::UnboundedReceiver<UnixStream>,
-    ) -> Result<Self, Error> {
+    pub async fn new(opts: EdgeContextInitOpts) -> Result<Self, Error> {
         let EdgeContextInitOpts {
             service_path,
             no_module_cache,
@@ -182,6 +178,13 @@ impl EdgeRuntime {
             .execute_script::<String>(located_script_name!(), script)
             .expect("Failed to execute bootstrap script");
 
+        let mut port: u16;
+        if let Some(available_port) = get_available_port() {
+            port = available_port;
+        } else {
+            port = 9100;
+        }
+
         {
             //run inside a closure, so op_state_rc is released
             let env_vars = env_vars.clone();
@@ -189,11 +192,25 @@ impl EdgeRuntime {
             let mut op_state = op_state_rc.borrow_mut();
             op_state.put::<sb_env::EnvVars>(env_vars);
 
-            op_state.put::<mpsc::UnboundedReceiver<UnixStream>>(unix_stream_rx);
             if !is_user_runtime {
                 if let EdgeContextOpts::MainWorker(conf) = conf.clone() {
                     op_state.put::<mpsc::UnboundedSender<UserWorkerMsgs>>(conf.worker_pool_tx);
                 }
+            }
+
+            let res = TcpListener::bind(format!("127.0.0.1:{}", port)).await;
+            if res.is_err() {
+                for i in (port + 1)..=10000 {
+                    let result = TcpListener::bind(format!("127.0.0.1:{}", i)).await;
+                    if result.is_ok() {
+                        let listener = result.unwrap();
+                        op_state.put::<TcpListener>(listener);
+                        port = i;
+                        break;
+                    }
+                }
+            } else {
+                op_state.put::<TcpListener>(res.unwrap());
             }
         }
 
@@ -204,6 +221,7 @@ impl EdgeRuntime {
             env_vars,
             conf,
             curr_user_opts: user_rt_opts,
+            port,
         })
     }
 
@@ -254,39 +272,36 @@ mod test {
     };
     use std::collections::HashMap;
     use std::path::PathBuf;
-    use tokio::net::UnixStream;
     use tokio::sync::mpsc;
 
-    fn create_runtime(
+    async fn create_runtime(
         path: Option<PathBuf>,
         env_vars: Option<HashMap<String, String>>,
         user_conf: Option<EdgeContextOpts>,
     ) -> EdgeRuntime {
         let (worker_pool_tx, _) = mpsc::unbounded_channel::<UserWorkerMsgs>();
-        let (_unix_stream_tx, unix_stream_rx) = mpsc::unbounded_channel::<UnixStream>();
-        EdgeRuntime::new(
-            EdgeContextInitOpts {
-                service_path: path.unwrap_or(PathBuf::from("./api/main")),
-                no_module_cache: false,
-                import_map_path: None,
-                env_vars: env_vars.unwrap_or(Default::default()),
-                conf: {
-                    if let Some(uc) = user_conf {
-                        uc
-                    } else {
-                        EdgeContextOpts::MainWorker(EdgeMainRuntimeOpts { worker_pool_tx })
-                    }
-                },
+
+        EdgeRuntime::new(EdgeContextInitOpts {
+            service_path: path.unwrap_or(PathBuf::from("./api/main")),
+            no_module_cache: false,
+            import_map_path: None,
+            env_vars: env_vars.unwrap_or(Default::default()),
+            conf: {
+                if let Some(uc) = user_conf {
+                    uc
+                } else {
+                    EdgeContextOpts::MainWorker(EdgeMainRuntimeOpts { worker_pool_tx })
+                }
             },
-            unix_stream_rx,
-        )
+        })
+        .await
         .unwrap()
     }
 
     // Main Runtime should have access to `EdgeRuntime`
     #[tokio::test]
     async fn test_main_runtime_creation() {
-        let mut runtime = create_runtime(None, None, None);
+        let mut runtime = create_runtime(None, None, None).await;
 
         {
             let scope = &mut runtime.js_runtime.handle_scope();
@@ -309,7 +324,8 @@ mod test {
             None,
             None,
             Some(EdgeContextOpts::UserWorker(Default::default())),
-        );
+        )
+        .await;
 
         {
             let scope = &mut runtime.js_runtime.handle_scope();
@@ -327,7 +343,7 @@ mod test {
 
     #[tokio::test]
     async fn test_main_rt_fs() {
-        let mut main_rt = create_runtime(None, Some(std::env::vars().collect()), None);
+        let mut main_rt = create_runtime(None, Some(std::env::vars().collect()), None).await;
 
         let global_value_deno_read_file_script = main_rt
             .js_runtime
@@ -349,12 +365,13 @@ mod test {
     #[tokio::test]
     async fn test_os_env_vars() {
         std::env::set_var("Supa_Test", "Supa_Value");
-        let mut main_rt = create_runtime(None, Some(std::env::vars().collect()), None);
+        let mut main_rt = create_runtime(None, Some(std::env::vars().collect()), None).await;
         let mut user_rt = create_runtime(
             None,
             None,
             Some(EdgeContextOpts::UserWorker(Default::default())),
-        );
+        )
+        .await;
         assert!(!main_rt.env_vars.is_empty());
         assert!(user_rt.env_vars.is_empty());
 
@@ -404,7 +421,7 @@ mod test {
         assert!(user_serde_deno_env.unwrap().is_null());
     }
 
-    fn create_basic_user_runtime(path: &str, life_time_ms: u64) -> EdgeRuntime {
+    async fn create_basic_user_runtime(path: &str, life_time_ms: u64) -> EdgeRuntime {
         create_runtime(
             Some(PathBuf::from(path)),
             None,
@@ -414,25 +431,26 @@ mod test {
                 pool_msg_tx: None,
             })),
         )
+        .await
     }
 
     #[tokio::test]
     async fn test_timeout_infinite_promises() {
-        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_promises", 100);
+        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_promises", 100).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::ModuleEvaluationTimedOut);
     }
 
     #[flaky_test]
     async fn test_timeout_infinite_loop() {
-        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_loop", 100);
+        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_loop", 100).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::TimeOut);
     }
 
     #[flaky_test]
     async fn test_unresolved_promise() {
-        let mut user_rt = create_basic_user_runtime("./test_cases/unresolved_promise", 100);
+        let mut user_rt = create_basic_user_runtime("./test_cases/unresolved_promise", 100).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::ModuleEvaluationTimedOut);
     }
@@ -440,7 +458,7 @@ mod test {
     #[flaky_test]
     async fn test_delayed_promise() {
         let mut user_rt =
-            create_basic_user_runtime("./test_cases/resolve_promise_after_timeout", 100);
+            create_basic_user_runtime("./test_cases/resolve_promise_after_timeout", 100).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::TimeOut);
     }
@@ -448,14 +466,14 @@ mod test {
     #[flaky_test]
     async fn test_success_delayed_promise() {
         let mut user_rt =
-            create_basic_user_runtime("./test_cases/resolve_promise_before_timeout", 100);
+            create_basic_user_runtime("./test_cases/resolve_promise_before_timeout", 100).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::Completed);
     }
 
     #[flaky_test]
     async fn test_heap_limits_reached() {
-        let mut user_rt = create_basic_user_runtime("./test_cases/heap_limit", 5);
+        let mut user_rt = create_basic_user_runtime("./test_cases/heap_limit", 5).await;
         let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::HeapLimitReached);
     }

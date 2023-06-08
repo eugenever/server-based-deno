@@ -1,0 +1,1140 @@
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+requestRid =  397
+requestBodyRid =  396
+writableStream =  WritableStream { locked: true }
+requestRid =  399
+requestBodyRid =  398
+writableStream =  WritableStream { locked: true }
+requestRid =  401
+requestBodyRid =  400
+writableStream =  WritableStream { locked: true }
+requestRid =  403
+requestBodyRid =  402
+writableStream =  WritableStream { locked: true }
+requestRid =  405
+requestBodyRid =  404
+writableStream =  WritableStream { locked: true }
+requestRid =  407
+requestBodyRid =  406
+writableStream =  WritableStream { locked: true }
+requestRid =  409
+requestBodyRid =  408
+writableStream =  WritableStream { locked: true }
+requestRid =  411
+requestBodyRid =  410
+writableStream =  WritableStream { locked: true }
+requestRid =  413
+requestBodyRid =  412
+writableStream =  WritableStream { locked: true }
+requestRid =  415
+requestBodyRid =  414
+writableStream =  WritableStream { locked: true }
+requestRid =  417
+requestBodyRid =  416
+writableStream =  WritableStream { locked: true }
+requestRid =  419
+requestBodyRid =  418
+writableStream =  WritableStream { locked: true }
+requestRid =  421
+requestBodyRid =  420
+writableStream =  WritableStream { locked: true }
+requestRid =  423
+requestBodyRid =  422
+writableStream =  WritableStream { locked: true }
+requestRid =  425
+requestBodyRid =  424
+writableStream =  WritableStream { locked: true }
+requestRid =  427
+requestBodyRid =  426
+writableStream =  WritableStream { locked: true }
+requestRid =  429
+requestBodyRid =  428
+writableStream =  WritableStream { locked: true }
+requestRid =  431
+requestBodyRid =  430
+writableStream =  WritableStream { locked: true }
+requestRid =  433
+requestBodyRid =  432
+writableStream =  WritableStream { locked: true }
+requestRid =  435
+requestBodyRid =  434
+writableStream =  WritableStream { locked: true }
+requestRid =  437
+requestBodyRid =  436
+writableStream =  WritableStream { locked: true }
+requestRid =  439
+requestBodyRid =  438
+writableStream =  WritableStream { locked: true }
+requestRid =  441
+requestBodyRid =  440
+writableStream =  WritableStream { locked: true }
+requestRid =  443
+requestBodyRid =  442
+writableStream =  WritableStream { locked: true }
+requestRid =  445
+requestBodyRid =  444
+writableStream =  WritableStream { locked: true }
+requestRid =  447
+requestBodyRid =  446
+writableStream =  WritableStream { locked: true }
+requestRid =  449
+requestBodyRid =  448
+writableStream =  WritableStream { locked: true }
+requestRid =  451
+requestBodyRid =  450
+writableStream =  WritableStream { locked: true }
+requestRid =  453
+requestBodyRid =  452
+writableStream =  WritableStream { locked: true }
+requestRid =  455
+requestBodyRid =  454
+writableStream =  WritableStream { locked: true }
+requestRid =  457
+requestBodyRid =  456
+writableStream =  WritableStream { locked: true }
+requestRid =  459
+requestBodyRid =  458
+writableStream =  WritableStream { locked: true }
+requestRid =  461
+requestBodyRid =  460
+writableStream =  WritableStream { locked: true }
+requestRid =  463
+requestBodyRid =  462
+writableStream =  WritableStream { locked: true }
+requestRid =  465
+requestBodyRid =  464
+writableStream =  WritableStream { locked: true }
+requestRid =  467
+requestBodyRid =  466
+writableStream =  WritableStream { locked: true }
+requestRid =  469
+requestBodyRid =  468
+writableStream =  WritableStream { locked: true }
+requestRid =  471
+requestBodyRid =  470
+writableStream =  WritableStream { locked: true }
+requestRid =  473
+requestBodyRid =  472
+writableStream =  WritableStream { locked: true }
+requestRid =  475
+requestBodyRid =  474
+writableStream =  WritableStream { locked: true }
+requestRid =  477
+requestBodyRid =  476
+writableStream =  WritableStream { locked: true }
+requestRid =  479
+requestBodyRid =  478
+writableStream =  WritableStream { locked: true }
+requestRid =  481
+requestBodyRid =  480
+writableStream =  WritableStream { locked: true }
+requestRid =  483
+requestBodyRid =  482
+writableStream =  WritableStream { locked: true }
+requestRid =  485
+requestBodyRid =  484
+writableStream =  WritableStream { locked: true }
+requestRid =  487
+requestBodyRid =  486
+writableStream =  WritableStream { locked: true }
+requestRid =  489
+requestBodyRid =  488
+writableStream =  WritableStream { locked: true }
+requestRid =  491
+requestBodyRid =  490
+writableStream =  WritableStream { locked: true }
+requestRid =  493
+requestBodyRid =  492
+writableStream =  WritableStream { locked: true }
+requestRid =  495
+requestBodyRid =  494
+writableStream =  WritableStream { locked: true }
+requestRid =  497
+requestBodyRid =  496
+writableStream =  WritableStream { locked: true }
+requestRid =  499
+requestBodyRid =  498
+writableStream =  WritableStream { locked: true }
+requestRid =  501
+requestBodyRid =  500
+writableStream =  WritableStream { locked: true }
+requestRid =  503
+requestBodyRid =  502
+writableStream =  WritableStream { locked: true }
+requestRid =  505
+requestBodyRid =  504
+writableStream =  WritableStream { locked: true }
+requestRid =  507
+requestBodyRid =  506
+writableStream =  WritableStream { locked: true }
+requestRid =  509
+requestBodyRid =  508
+writableStream =  WritableStream { locked: true }
+requestRid =  511
+requestBodyRid =  510
+writableStream =  WritableStream { locked: true }
+requestRid =  513
+requestBodyRid =  512
+writableStream =  WritableStream { locked: true }
+requestRid =  515
+requestBodyRid =  514
+writableStream =  WritableStream { locked: true }
+requestRid =  517
+requestBodyRid =  516
+writableStream =  WritableStream { locked: true }
+Error in main worker connection: connection closed before message completed, service path: "./api/main-empty"
+Error in main worker connection: connection closed before message completed, service path: "./api/main-empty"
+Error in main worker connection: connection closed before message completed, service path: "./api/main-empty"
+Worker event loop panicked TypeError: request body receiver not connected (request closed)
+    at async Object.write (ext:deno_web/06_streams.js:914:9)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104))
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), operation was canceled: connection closed before message completed
+
+Caused by:
+    connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before mess
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================================================================================
+===================================================== NORMAL CASE =====================================================
+=======================================================================================================================
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+requestRid =  34
+requestBodyRid =  33
+writableStream =  WritableStream { locked: true }
+requestRid =  36
+requestBodyRid =  35
+writableStream =  WritableStream { locked: true }
+requestRid =  38
+requestBodyRid =  37
+writableStream =  WritableStream { locked: true }
+requestRid =  40
+requestBodyRid =  39
+writableStream =  WritableStream { locked: true }
+requestRid =  42
+requestBodyRid =  41
+writableStream =  WritableStream { locked: true }
+requestRid =  44
+requestBodyRid =  43
+writableStream =  WritableStream { locked: true }
+requestRid =  46
+requestBodyRid =  45
+writableStream =  WritableStream { locked: true }
+requestRid =  48
+requestBodyRid =  47
+writableStream =  WritableStream { locked: true }
+requestRid =  50
+requestBodyRid =  49
+writableStream =  WritableStream { locked: true }
+requestRid =  52
+requestBodyRid =  51
+writableStream =  WritableStream { locked: true }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 53,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 54,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 55,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 56,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 57,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 58,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 59,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 60,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 61,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 07:59:08 GMT" ]
+  ],
+  bodyRid: 62,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+
+
+
+
+
+
+
+=============================================================================================
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 589,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 590,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 591,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 592,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 593,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 594,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 595,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 596,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 597,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+res =  {
+  status: 200,
+  statusText: "OK",
+  headers: [
+    [ "content-type", "application/json" ],
+    [ "vary", "Accept-Encoding" ],
+    [ "content-encoding", "gzip" ],
+    [ "content-length", "39" ],
+    [ "date", "Sat, 27 May 2023 09:02:59 GMT" ]
+  ],
+  bodyRid: 598,
+  size: 39
+}
+bodyStream =  ReadableStream { locked: false }
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+userWorkerReq =  {
+  method: "POST",
+  url: "http://localhost:9000/api/main-empty",
+  headers: [
+    [ "accept-encoding", "gzip" ],
+    [ "content-length", "8" ],
+    [ "content-type", "application/json" ],
+    [ "host", "localhost:9000" ],
+    [ "user-agent", "hey/0.0.1" ]
+  ],
+  hasBody: true
+}
+requestRid =  607
+requestBodyRid =  606
+writableStream =  WritableStream { locked: true }
+requestRid =  609
+requestBodyRid =  608
+writableStream =  WritableStream { locked: true }
+requestRid =  611
+requestBodyRid =  610
+writableStream =  WritableStream { locked: true }
+requestRid =  613
+requestBodyRid =  612
+writableStream =  WritableStream { locked: true }
+requestRid =  615
+requestBodyRid =  614
+writableStream =  WritableStream { locked: true }
+requestRid =  617
+requestBodyRid =  616
+writableStream =  WritableStream { locked: true }
+requestRid =  619
+requestBodyRid =  618
+writableStream =  WritableStream { locked: true }
+requestRid =  621
+requestBodyRid =  620
+writableStream =  WritableStream { locked: true }
+Error in main worker connection: connection closed before message completed, service path: "./api/main-empty"
+VAL = Some(Some(b"name:Jon"))
+VAL = Some(Some(b"name:Jon"))
+VAL = Some(Some(b"name:Jon"))
+Error in main worker connection: connection error: Connection reset by peer (os error 104), service path: "./api/main-empty"
+Worker event loop panicked TypeError: request body receiver not connected (request closed)
+    at async Object.write (ext:deno_web/06_streams.js:914:9)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+Error in main worker connection: error writing a body to connection: Broken pipe (os error 32), service path: "./api/main"
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
+hyper::Error(User(Service), connection closed before message completed)
