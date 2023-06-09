@@ -2,7 +2,7 @@
 
 This application is a server based [Deno](https://deno.land) Runtime that can be used as a standalone service or, if necessary, embedded in your Rust language application. 
 
-**Supported operating systems: Unix (Linux, MacOS). Windows not supported.**
+**Supported operating systems: Windows, Unix (Linux, MacOS).**
 
 ## Network architecture
 
