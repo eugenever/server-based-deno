@@ -40,14 +40,19 @@ fn cli() -> Command {
         )
 }
 
-#[tokio::main(flavor = "current_thread")]
-async fn main() -> Result<(), anyhow::Error> {
+fn main() {
     let matches = cli().get_matches();
 
     if !matches.get_flag("quiet") {
         let verbose = matches.get_flag("verbose");
         logger::init(verbose);
     }
+
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap();
+    let local = tokio::task::LocalSet::new();
 
     #[allow(clippy::single_match)]
     match matches.subcommand() {
@@ -66,20 +71,25 @@ async fn main() -> Result<(), anyhow::Error> {
                 .cloned()
                 .unwrap();
 
-            start_server(
-                ip.as_str(),
-                port,
-                main_service_path,
-                import_map_path,
-                no_module_cache,
-                num_main_workers,
-            )
-            .await?;
+            local.block_on(&runtime, async {
+                let res = start_server(
+                    ip.as_str(),
+                    port,
+                    main_service_path,
+                    import_map_path,
+                    no_module_cache,
+                    num_main_workers,
+                )
+                .await;
+
+                if res.is_err() {
+                    println!("Server panicked {:?}", res.err().unwrap());
+                }
+            });
         }
         _ => {
             // unrecognized command
             unreachable!();
         }
     }
-    Ok(())
 }

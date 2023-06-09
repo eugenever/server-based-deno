@@ -1,5 +1,8 @@
-import { add, multiply } from "ramda";
-import { serve } from "server";
+import {
+  add,
+  multiply,
+} from "https://x.nest.land/ramda@0.27.0/source/index.js";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 interface reqPayload {
   name: string;

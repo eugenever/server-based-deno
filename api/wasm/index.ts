@@ -1,4 +1,4 @@
-import { serve } from "server";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const imports = { imports: { imported_func: (arg) => console.log(arg) } };
 const wasmCode = new Uint8Array([

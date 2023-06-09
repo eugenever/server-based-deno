@@ -1,9 +1,9 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 // @deno-types="https://cdn.sheetjs.com/xlsx-0.19.3/package/types/index.d.ts"
-import * as XLSX from "xlsx";
-import { serve } from "server";
-import axios from "axios";
+import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.19.3/package/xlsx.mjs";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import axios from "https://esm.sh/axios@1.4.0";
 
 console.log("sheetjs worker started...");
 

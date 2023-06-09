@@ -1,4 +1,4 @@
-import { serve } from "server";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 interface reqPayload {
   name: string;
@@ -19,7 +19,7 @@ serve(
     };
 
     // emulates highload
-    await delay(1);
+    await delay(10000);
 
     return new Response(JSON.stringify(data), {
       headers: {

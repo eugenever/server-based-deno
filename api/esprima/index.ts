@@ -1,5 +1,5 @@
-import { serve } from "server";
-import esprima from "esprima";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import esprima from "https://dev.jspm.io/esprima";
 
 // deno-lint-ignore require-await
 serve(async (_req: Request) => {

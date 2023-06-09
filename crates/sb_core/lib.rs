@@ -15,6 +15,7 @@ deno_core::extension!(
         op_fetch_reqwest,
         op_write_file_tokio,
         op_fibonacci,
+        op_fibonacci2,
     ],
     esm = [
         "js/permissions.js",
@@ -70,6 +71,20 @@ fn fibonacci(n: u64) -> u64 {
 pub async fn op_fibonacci(n: u64) -> Result<Vec<u64>, AnyError> {
     let (tx, rx) = tokio::sync::oneshot::channel::<Vec<u64>>();
     std::thread::spawn(move || {
+        let mut v: Vec<u64> = Vec::with_capacity((n + 1) as usize);
+        for i in 0..=n {
+            v.push(fibonacci(i));
+        }
+        _ = tx.send(v);
+    });
+    let res = rx.await.unwrap();
+    Ok(res)
+}
+
+#[op]
+pub async fn op_fibonacci2(n: u64) -> Result<Vec<u64>, AnyError> {
+    let (tx, rx) = tokio::sync::oneshot::channel::<Vec<u64>>();
+    tokio::task::spawn_blocking(move || {
         let mut v: Vec<u64> = Vec::with_capacity((n + 1) as usize);
         for i in 0..=n {
             v.push(fibonacci(i));

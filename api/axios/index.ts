@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
-import { serve } from "server";
-import axios from "axios";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import axios from "https://esm.sh/axios@1.4.0";
 
 console.log("Axios started...");
 

@@ -1,7 +1,7 @@
-import { serve } from "server";
-import { exists } from "exists";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { exists } from "https://deno.land/std@0.189.0/fs/exists.ts";
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
-import { Mutex } from "async-mutex";
+import { Mutex } from "https://esm.sh/async-mutex@0.4.0";
 
 import {
   addWorkerToPool,
@@ -14,7 +14,7 @@ import {
 // initialize Workers
 await initializeWorkers();
 // console.log("Init workerPool:", workerPool);
-// console.log(Mutex);
+
 const mutex = new Mutex();
 
 interface ServicePathStatistic {
@@ -400,12 +400,6 @@ async function handler(req: Request): Promise<any> {
   serveStatistics(servicePath);
 
   return await callWorker(req, servicePath, configurationWorker);
-
-  /*
-  return await mutex.runExclusive(async () => {
-    return await callWorker(req, servicePath, configurationWorker);
-  });
-  */
 }
 
 console.log("Main worker started...");

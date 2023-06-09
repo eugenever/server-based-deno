@@ -1,6 +1,6 @@
 use crate::worker_ctx::{create_user_worker_pool, create_worker, WorkerRequestMsg};
 use anyhow::{anyhow, Error};
-use hyper::{server::conn::Http, service::Service, Body, Request, Response};
+use hyper::{server::conn::Http, service::Service, Body, Request, Response, StatusCode};
 use log::{debug, error, info};
 use sb_worker_context::essentials::{EdgeContextInitOpts, EdgeContextOpts, EdgeMainRuntimeOpts};
 use std::future::Future;
@@ -37,12 +37,15 @@ impl Service<Request<Body>> for WorkerService {
     fn call(&mut self, req: Request<Body>) -> Self::Future {
         // create a response in a future.
         let worker_req_tx = self.worker_req_tx.clone();
-        let fut = async move {
+        let response = async move {
             let req_path = req.uri().path();
 
-            // if the request is for the health endpoint return a 200 OK response
-            if req_path == "/_internal/health" {
-                return Ok(Response::new(Body::empty()));
+            if !req_path.starts_with("/api") {
+                let response = Response::builder()
+                    .status(StatusCode::BAD_REQUEST)
+                    .body(Body::empty())
+                    .unwrap();
+                return Ok(response);
             }
 
             let (res_tx, res_rx) = oneshot::channel::<Result<Response<Body>, hyper::Error>>();
@@ -60,7 +63,7 @@ impl Service<Request<Body>> for WorkerService {
         };
 
         // Return the response as an immediate future
-        Box::pin(fut)
+        Box::pin(response)
     }
 }
 
@@ -137,14 +140,14 @@ impl Server {
                 msg = listener.accept() => {
                     match msg {
                         Ok((conn, _)) => {
-                            tokio::spawn(async move {
+                            tokio::task::spawn_local(async move {
                                 let service = WorkerService::new(main_worker_req_tx_clone);
 
                                 let connection = Http::new()
                                     .serve_connection(conn, service);
 
                                 if let Err(e) = connection.await {
-                                    error!("{:?}", e);
+                                    error!("Hyper connection error: {:?}", e);
                                 }
                             });
                        }

@@ -98,7 +98,10 @@ fn get_error_class_name(e: &AnyError) -> &'static str {
 }
 
 impl EdgeRuntime {
-    pub fn new(opts: EdgeContextInitOpts) -> Result<Self, Error> {
+    pub fn new(
+        opts: EdgeContextInitOpts,
+        unix_stream_rx: mpsc::UnboundedReceiver<UnixStream>,
+    ) -> Result<Self, Error> {
         let EdgeContextInitOpts {
             service_path,
             no_module_cache,
@@ -185,6 +188,13 @@ impl EdgeRuntime {
             let op_state_rc = js_runtime.op_state();
             let mut op_state = op_state_rc.borrow_mut();
             op_state.put::<sb_env::EnvVars>(env_vars);
+
+            op_state.put::<mpsc::UnboundedReceiver<UnixStream>>(unix_stream_rx);
+            if !is_user_runtime {
+                if let EdgeContextOpts::MainWorker(conf) = conf.clone() {
+                    op_state.put::<mpsc::UnboundedSender<UserWorkerMsgs>>(conf.worker_pool_tx);
+                }
+            }
         }
 
         Ok(Self {
@@ -197,24 +207,7 @@ impl EdgeRuntime {
         })
     }
 
-    pub async fn run(
-        mut self,
-        unix_stream_rx: mpsc::UnboundedReceiver<UnixStream>,
-    ) -> Result<EdgeCallResult, Error> {
-        let is_user_rt = self.is_user_runtime;
-
-        {
-            let op_state_rc = self.js_runtime.op_state();
-            let mut op_state = op_state_rc.borrow_mut();
-            op_state.put::<mpsc::UnboundedReceiver<UnixStream>>(unix_stream_rx);
-
-            if !is_user_rt {
-                if let EdgeContextOpts::MainWorker(conf) = self.conf.clone() {
-                    op_state.put::<mpsc::UnboundedSender<UserWorkerMsgs>>(conf.worker_pool_tx);
-                }
-            }
-        }
-
+    pub async fn run(&mut self) -> Result<EdgeCallResult, Error> {
         let mod_id = self
             .js_runtime
             .load_main_module(&self.main_module_url, None)
@@ -263,7 +256,6 @@ mod test {
     use std::path::PathBuf;
     use tokio::net::UnixStream;
     use tokio::sync::mpsc;
-    use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
     fn create_runtime(
         path: Option<PathBuf>,
@@ -271,26 +263,24 @@ mod test {
         user_conf: Option<EdgeContextOpts>,
     ) -> EdgeRuntime {
         let (worker_pool_tx, _) = mpsc::unbounded_channel::<UserWorkerMsgs>();
-
-        EdgeRuntime::new(EdgeContextInitOpts {
-            service_path: path.unwrap_or(PathBuf::from("./api/main")),
-            no_module_cache: false,
-            import_map_path: None,
-            env_vars: env_vars.unwrap_or(Default::default()),
-            conf: {
-                if let Some(uc) = user_conf {
-                    uc
-                } else {
-                    EdgeContextOpts::MainWorker(EdgeMainRuntimeOpts { worker_pool_tx })
-                }
+        let (_unix_stream_tx, unix_stream_rx) = mpsc::unbounded_channel::<UnixStream>();
+        EdgeRuntime::new(
+            EdgeContextInitOpts {
+                service_path: path.unwrap_or(PathBuf::from("./api/main")),
+                no_module_cache: false,
+                import_map_path: None,
+                env_vars: env_vars.unwrap_or(Default::default()),
+                conf: {
+                    if let Some(uc) = user_conf {
+                        uc
+                    } else {
+                        EdgeContextOpts::MainWorker(EdgeMainRuntimeOpts { worker_pool_tx })
+                    }
+                },
             },
-        })
+            unix_stream_rx,
+        )
         .unwrap()
-    }
-
-    fn create_user_rt_params_to_run() -> (UnboundedSender<UnixStream>, UnboundedReceiver<UnixStream>)
-    {
-        mpsc::unbounded_channel::<UnixStream>()
     }
 
     // Main Runtime should have access to `EdgeRuntime`
@@ -428,67 +418,45 @@ mod test {
 
     #[tokio::test]
     async fn test_timeout_infinite_promises() {
-        let user_rt = create_basic_user_runtime("./test_cases/infinite_promises", 100);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_promises", 100);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::ModuleEvaluationTimedOut);
     }
 
-    /*
-    #[flaky_test]
-    async fn test_read_file_user_rt() {
-        let user_rt = create_basic_user_runtime("./test_cases/readFile", 5, 1000);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
-        match data {
-            EdgeCallResult::ErrorThrown(data) => {
-                assert!(data
-                    .0
-                    .to_string()
-                    .contains("TypeError: Deno.readFileSync is not a function"));
-            }
-            _ => panic!("Invalid Result"),
-        };
-    }
-    */
-
     #[flaky_test]
     async fn test_timeout_infinite_loop() {
-        let user_rt = create_basic_user_runtime("./test_cases/infinite_loop", 100);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt = create_basic_user_runtime("./test_cases/infinite_loop", 100);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::TimeOut);
     }
 
     #[flaky_test]
     async fn test_unresolved_promise() {
-        let user_rt = create_basic_user_runtime("./test_cases/unresolved_promise", 100);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt = create_basic_user_runtime("./test_cases/unresolved_promise", 100);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::ModuleEvaluationTimedOut);
     }
 
     #[flaky_test]
     async fn test_delayed_promise() {
-        let user_rt = create_basic_user_runtime("./test_cases/resolve_promise_after_timeout", 100);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt =
+            create_basic_user_runtime("./test_cases/resolve_promise_after_timeout", 100);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::TimeOut);
     }
 
     #[flaky_test]
     async fn test_success_delayed_promise() {
-        let user_rt = create_basic_user_runtime("./test_cases/resolve_promise_before_timeout", 100);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt =
+            create_basic_user_runtime("./test_cases/resolve_promise_before_timeout", 100);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::Completed);
     }
 
     #[flaky_test]
     async fn test_heap_limits_reached() {
-        let user_rt = create_basic_user_runtime("./test_cases/heap_limit", 5);
-        let (_tx, unix_stream_rx) = create_user_rt_params_to_run();
-        let data = user_rt.run(unix_stream_rx).await.unwrap();
+        let mut user_rt = create_basic_user_runtime("./test_cases/heap_limit", 5);
+        let data = user_rt.run().await.unwrap();
         assert_eq!(data, EdgeCallResult::HeapLimitReached);
     }
 }

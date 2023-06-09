@@ -1,5 +1,5 @@
-import { serve } from "server";
-import { init } from "init";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { init } from "https://esm.sh/@dqbd/tiktoken/lite/init";
 
 serve(async (_req: Request) => {
   // deno-lint-ignore require-await
