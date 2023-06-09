@@ -10,7 +10,7 @@
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
-            "number": 2
+            "number": 1
         },
         "xlsx-template": {
             "active": false,
@@ -27,18 +27,18 @@
             "number": 1
         },
         "empty-response": {
-            "active": true,
+            "active": false,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
             "number": 1
         },
         "main-empty": {
-            "active": true,
+            "active": false,
             "lifeTimeMs": 3600000,
             "noModuleCache": false,            
             "restart": true,
-            "number": 2
+            "number": 1
         },
         "pdf-lib": {
             "active": false,

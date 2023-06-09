@@ -47,7 +47,7 @@ fn op_net_listen(state: Rc<RefCell<OpState>>) -> Result<(ResourceId, IpAddr), An
     };
     let mut op_state = state.borrow_mut();
     let rid = op_state.resource_table.add(resource);
-    // println!("op_net_listen, addr = {}", local_addr);
+
     Ok((rid, IpAddr::from(local_addr)))
 }
 
@@ -82,7 +82,7 @@ async fn op_net_accept(
     let rid = state
         .resource_table
         .add(TcpStreamResource::new(tcp_stream.into_split()));
-    // println!("op_net_accept, addr = {}, {}", local_addr, remote_addr);
+
     Ok((rid, IpAddr::from(local_addr), IpAddr::from(remote_addr)))
 }
 

@@ -1,4 +1,5 @@
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
+import { join } from "https://deno.land/std@0.188.0/path/mod.ts";
 
 // workerPool<string, expireWorker[]>: servicePath:[..workers]
 const workerPool = new Map();
@@ -25,7 +26,9 @@ async function getConfiguration(filePath: string) {
 }
 
 async function initializeWorkers() {
-  configuration = await getConfiguration("C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/configuration.json");
+  configuration = await getConfiguration(
+    join(Deno.cwd(), "api", "configuration.json")
+  );
   for (const worker of Object.keys(configuration.workers)) {
     if (configuration.workers[worker].active) {
       const servicePath = apiPath(worker);
@@ -48,7 +51,7 @@ async function initializeWorkers() {
 }
 
 function apiPath(sp: string): string {
-  return `C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/${sp}`;
+  return join(Deno.cwd(), "api", `${sp}`);
 }
 
 export {

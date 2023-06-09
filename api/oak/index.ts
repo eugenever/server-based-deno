@@ -3,7 +3,7 @@ import {
   Router,
   Context,
 } from "https://deno.land/x/oak@v12.3.0/mod.ts";
-// import { Pool } from "https://deno.land/x/postgres@v0.14.2/mod.ts";
+import { Pool } from "https://deno.land/x/postgres@v0.14.2/mod.ts";
 import {
   Counter,
   Registry,
@@ -20,23 +20,23 @@ import fontkit from "https://cdn.skypack.dev/@pdf-lib/fontkit@^1.0.0?dts";
 
 console.log("OAK worker started...");
 
-// const POOL_CONNECTIONS = 60;
-// const dbPool = new Pool(
-//   {
-//     user: "postgres",
-//     password: "123",
-//     database: "rust_test",
-//     hostname: "127.0.0.1",
-//     port: 5432,
-//     tls: {
-//       enabled: false,
-//     },
-//     connection: {
-//       attempts: 5,
-//     },
-//   },
-//   POOL_CONNECTIONS
-// );
+const POOL_CONNECTIONS = 20;
+const dbPool = new Pool(
+  {
+    user: "postgres",
+    password: "123",
+    database: "rust_test",
+    hostname: "127.0.0.1",
+    port: 5432,
+    tls: {
+      enabled: false,
+    },
+    connection: {
+      attempts: 5,
+    },
+  },
+  POOL_CONNECTIONS
+);
 
 const counter = Counter.with({
   name: "http_requests_total",
@@ -44,16 +44,16 @@ const counter = Counter.with({
   labels: ["path", "method", "status"],
 });
 
-// async function runQuery(query: string) {
-//   const client = await dbPool.connect();
-//   let result;
-//   try {
-//     result = await client.queryObject(query);
-//   } finally {
-//     client.release();
-//   }
-//   return result;
-// }
+async function runQuery(query: string) {
+  const client = await dbPool.connect();
+  let result;
+  try {
+    result = await client.queryObject(query);
+  } finally {
+    client.release();
+  }
+  return result;
+}
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -80,11 +80,11 @@ router
   })
   .all("/fibonacci", async (context: Context) => {
     try {
-      // const result = context.request.body({ type: "json", limit: 0 });
-      // const body = await result.value;
-      // const n = body?.n || 10;
+      const result = context.request.body({ type: "json", limit: 0 });
+      const body = await result.value;
+      const n = body?.n || 10;
 
-      const fib = await Deno.fibonacci(18);
+      const fib = await Deno.fibonacci(n);
       context.response.body = fib;
     } catch (e) {
       console.error(e);
@@ -92,11 +92,11 @@ router
   })
   .all("/fibonacci2", async (context: Context) => {
     try {
-      //   const result = context.request.body({ type: "json", limit: 0 });
-      //   const body = await result.value;
-      //   const n = body?.n || 10;
+      const result = context.request.body({ type: "json", limit: 0 });
+      const body = await result.value;
+      const n = body?.n || 10;
 
-      const fib = await Deno.fibonacci2(10);
+      const fib = await Deno.fibonacci2(n);
       context.response.body = fib;
     } catch (e) {
       console.error(e);
@@ -104,8 +104,8 @@ router
   })
   .post("/postgres", async (context: Context) => {
     try {
-      // const users = await runQuery("SELECT ID, NAME FROM USERS");
-      // context.response.body = users.rows;
+      const users = await runQuery("SELECT ID, NAME FROM USERS");
+      context.response.body = users.rows;
     } catch (e) {
       console.error(e);
     }

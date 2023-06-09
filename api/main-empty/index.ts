@@ -9,7 +9,7 @@ console.log("Main empty started...");
 serve(
   async (_req: Request) => {
     // const text = await Deno.readFileTokio("./testing.md");
-    const bytes = await Deno.readFile("C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/testing.md");
+    const bytes = await Deno.readFile("./testing.md");
     const _text = new TextDecoder().decode(bytes);
     // console.log(text);
     registerFormat({ myFormat: "yyyy/MM/dd hh-mm-ss" });

@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { exists } from "https://deno.land/std@0.189.0/fs/exists.ts";
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
 import { Mutex } from "https://esm.sh/async-mutex@0.4.0";
+import { join } from "https://deno.land/std@0.188.0/path/mod.ts";
 
 import {
   addWorkerToPool,
@@ -329,14 +330,18 @@ async function handler(req: Request): Promise<any> {
 
   // serve request favicon
   if (service_name.includes("favicon.ico")) {
-    const favicon = await exists("C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/main/favicon.ico");
+    const favicon = await exists(
+      join(Deno.cwd(), "api", "main", "favicon.ico")
+    );
     if (!favicon) {
       return new Response(null, {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
     }
-    const res = await Deno.readFile("C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/api/main/favicon.ico");
+    const res = await Deno.readFile(
+      join(Deno.cwd(), "api", "main", "favicon.ico")
+    );
 
     return new Response(res, {
       status: 200,
@@ -353,7 +358,7 @@ async function handler(req: Request): Promise<any> {
     });
   }
 
-  const servicePath = `C:/Users/user/ДОКУМЕНТЫ/Work/edge-runtime/${service_name}`;
+  const servicePath = join(Deno.cwd(), `./${service_name}`);
 
   const nowDate = new Date();
   const expireDate = new Date(

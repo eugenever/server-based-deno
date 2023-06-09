@@ -32,7 +32,7 @@ pub async fn create_worker(
     // channel for terminate worker-thread
     let (terminate_tx, terminate_rx) = oneshot::channel::<()>();
     // channel for send port
-    let (port_tx, port_rx) = oneshot::channel::<u16>();
+    let (port_tx, port_rx) = oneshot::channel::<u16>();    
 
     let is_user_runtime = match conf.conf.clone() {
         EdgeContextOpts::UserWorker(_) => true,
@@ -121,8 +121,7 @@ pub async fn create_worker(
             // exclude blocking main worker and user worker during long-term processing of requests
             // user worker allways can receive new requests
             tokio::task::spawn_local(async move {
-                let stream: TcpStream;
-
+                let stream: TcpStream;                
                 let result = TcpStream::connect(format!("127.0.0.1:{}", port)).await;                
                 if result.is_ok() {
                     stream = result.unwrap();
@@ -146,9 +145,9 @@ pub async fn create_worker(
                             }
                         }
                     }
-                }               
+                }                
                 
-                // send the HTTP request to the worker over Unix stream
+                // send the HTTP request to the worker over tcp stream
                 let (mut request_sender, connection) =
                     hyper::client::conn::handshake(stream).await.unwrap();
 
@@ -161,16 +160,16 @@ pub async fn create_worker(
                 
                 tokio::time::sleep(std::time::Duration::from_millis(1)).await;
                 
-                
                 let (mut parts, body) = msg.req.into_parts();                
                 if let Some(_) = parts.uri.port_u16() {                   
                     let uri = format!("http://localhost:{}{}", port, parts.uri.path());
                     parts.uri = uri.parse().unwrap();
                 }
-                let request = http::Request::from_parts(parts, body);
-                
-                let result = request_sender.send_request(request).await;
+                let request = http::Request::from_parts(parts, body);                
+               
+                let result = request_sender.send_request(request).await;                
                 handle.abort();
+                drop(request_sender);
                 _ = msg.res_tx.send(result);
             });
         }

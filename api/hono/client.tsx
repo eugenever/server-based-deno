@@ -1,40 +1,40 @@
 /** @jsx jsx */
 import { Hono } from "https://deno.land/x/hono@v3.2.3/mod.ts";
 import { jsx } from "https://deno.land/x/hono@v3.2.3/middleware.ts";
-// import { Pool } from "https://deno.land/x/postgres@v0.14.2/mod.ts";
+import { Pool } from "https://deno.land/x/postgres@v0.14.2/mod.ts";
 import {
   Counter,
   Registry,
 } from "https://deno.land/x/ts_prometheus@v0.3.0/mod.ts";
 
-// const POOL_CONNECTIONS = 20;
-// const dbPool = new Pool(
-//   {
-//     user: "postgres",
-//     password: "123",
-//     database: "rust_test",
-//     hostname: "127.0.0.1",
-//     port: 5432,
-//     tls: {
-//       enabled: false,
-//     },
-//     connection: {
-//       attempts: 5,
-//     },
-//   },
-//   POOL_CONNECTIONS
-// );
+const POOL_CONNECTIONS = 20;
+const dbPool = new Pool(
+  {
+    user: "postgres",
+    password: "123",
+    database: "rust_test",
+    hostname: "127.0.0.1",
+    port: 5432,
+    tls: {
+      enabled: false,
+    },
+    connection: {
+      attempts: 5,
+    },
+  },
+  POOL_CONNECTIONS
+);
 
-// async function runQuery(query: string) {
-//   const client = await dbPool.connect();
-//   let result;
-//   try {
-//     result = await client.queryObject(query);
-//   } finally {
-//     client.release();
-//   }
-//   return result;
-// }
+async function runQuery(query: string) {
+  const client = await dbPool.connect();
+  let result;
+  try {
+    result = await client.queryObject(query);
+  } finally {
+    client.release();
+  }
+  return result;
+}
 
 const counter = Counter.with({
   name: "http_requests_total",
@@ -63,8 +63,8 @@ app.all("/fibonacci2", async (c) => {
 
 app.all("/postgres", async (c) => {
   try {
-    // const users = await runQuery("SELECT ID, NAME FROM USERS");
-    // return c.json(users.rows);
+    const users = await runQuery("SELECT ID, NAME FROM USERS");
+    return c.json(users.rows);
   } catch (e) {
     console.error(e);
   }
