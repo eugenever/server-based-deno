@@ -162,7 +162,7 @@ pub async fn create_worker(
                 
                 let (mut parts, body) = msg.req.into_parts();                
                 if let Some(_) = parts.uri.port_u16() {                   
-                    let uri = format!("http://localhost:{}{}", port, parts.uri.path());
+                    let uri = format!("http://127.0.0.1:{}{}", port, parts.uri.path());
                     parts.uri = uri.parse().unwrap();
                 }
                 let request = http::Request::from_parts(parts, body);                
