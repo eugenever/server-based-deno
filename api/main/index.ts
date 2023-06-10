@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { exists } from "https://deno.land/std@0.189.0/fs/exists.ts";
 import { ConfigWorker, createWorker } from "./configWorkers.ts";
 import { Mutex } from "https://esm.sh/async-mutex@0.4.0";
+import { join } from "https://deno.land/std@0.188.0/path/mod.ts";
 
 import {
   addWorkerToPool,
@@ -116,7 +117,8 @@ async function shutdown(req: Request): Promise<Response> {
         const workersServicePath = workerPool.get(k);
         if (workersServicePath) {
           const workers = workersServicePath.filter(
-            (expireWorker: any) => expireWorker.worker.key !== key
+            (expireWorker: { worker: { key: string } }) =>
+              expireWorker.worker.key !== key
           );
           if (workers.length < workersServicePath.length) {
             workerPool.set(k, workers);
@@ -213,7 +215,8 @@ async function callWorker(
   configurationWorker: ConfigWorker
 ) {
   try {
-    let expireWorker;
+    // deno-lint-ignore no-explicit-any
+    let expireWorker: any;
 
     await mutex.runExclusive(async () => {
       const deleteKeys: {
@@ -241,7 +244,8 @@ async function callWorker(
       for (const { key, servicePath, configuration } of deleteKeys) {
         const workersServicePath = workerPool.get(servicePath);
         const workers = workersServicePath.filter(
-          (expireWorker: any) => expireWorker.worker.key !== key
+          (expireWorker: { worker: { key: string } }) =>
+            expireWorker.worker.key !== key
         );
         console.log(
           `EXPIRED Worker with key: ${key} for service path: ${servicePath} at ${configuration.expireDate?.toISOString()}`
@@ -326,14 +330,18 @@ async function handler(req: Request): Promise<any> {
 
   // serve request favicon
   if (service_name.includes("favicon.ico")) {
-    const favicon = await exists("./api/main/favicon.ico");
+    const favicon = await exists(
+      join(Deno.cwd(), "api", "main", "favicon.ico")
+    );
     if (!favicon) {
       return new Response(null, {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
     }
-    const res = await Deno.readFile("./api/main/favicon.ico");
+    const res = await Deno.readFile(
+      join(Deno.cwd(), "api", "main", "favicon.ico")
+    );
 
     return new Response(res, {
       status: 200,
@@ -350,7 +358,7 @@ async function handler(req: Request): Promise<any> {
     });
   }
 
-  const servicePath = `./${service_name}`;
+  const servicePath = join(Deno.cwd(), `./${service_name}`);
 
   const nowDate = new Date();
   const expireDate = new Date(
@@ -403,6 +411,6 @@ async function handler(req: Request): Promise<any> {
 }
 
 console.log("Main worker started...");
-// console.log(Deno);
+// console.log(Deno.serveHttp);
 
 serve(handler);

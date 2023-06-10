@@ -7,7 +7,7 @@ import {
   Registry,
 } from "https://deno.land/x/ts_prometheus@v0.3.0/mod.ts";
 
-const POOL_CONNECTIONS = 20;
+const POOL_CONNECTIONS = 60;
 const dbPool = new Pool(
   {
     user: "postgres",
@@ -51,6 +51,12 @@ app.get("/jsx", (c) => {
 
 app.all("/fibonacci", async (c) => {
   const fib = await Deno.fibonacci(10);
+  c.status(201);
+  return c.text(fib);
+});
+
+app.all("/fibonacci2", async (c) => {
+  const fib = await Deno.fibonacci2(10);
   c.status(201);
   return c.text(fib);
 });
